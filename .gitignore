@@ -1,0 +1,6 @@
+Compile
+scratch.py
+test.py
+*.bak
+archive
+__pycache__
