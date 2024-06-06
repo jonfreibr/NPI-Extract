@@ -31,7 +31,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.1'
+progver = 'v 0.2'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -90,7 +90,7 @@ def write_user_settings(user_config):
                 return
 
 # --------------------------------------------------
-def create_extract(output_file, args):
+def create_extract(output_file, args, window):
 
     npiList = [] # Provider List w/NPI
     npiFile = openpyxl.load_workbook(args.file)
@@ -108,11 +108,17 @@ def create_extract(output_file, args):
 
     npiFile.close()
 
+    window['-STATUS_MSG-'].update('Local NPIs loaded. Loading Medicaid source file...')
+    window.refresh()
+
     try:
         src = openpyxl.load_workbook(sg.popup_get_file('Medicaid source file'))
     except:
         return False
     
+    window['-STATUS_MSG-'].update('Processing Medicaid source file, please be patient..!')
+    window.refresh()
+
     currentSheet = src.active
 
     wb = Workbook() # create our output file
@@ -150,6 +156,8 @@ def create_extract(output_file, args):
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
 
+    window['-STATUS_MSG-'].update('Done! Writing output file...')
+    window.refresh()
     wb.save(output_file) # write the output file
     return True
 
@@ -165,12 +173,13 @@ def extract_NPI_data():
     if 'winSize' in user_config:
         winSize = user_config['winSize']
     else:
-        winSize = (450, 175)
+        winSize = (450, 190)
     
     
     sg.theme(user_config['Theme'])
     layout = [  [sg.Image('logo.png', size=(400, 96))],
                 [sg.Text('Extract local NPI data from Medicaid source file.')],
+                [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid file'), sg.Push(), sg.Button('Quit')],
                  [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2023, 2024')] ]
     window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, finalize=True)
@@ -190,7 +199,7 @@ def extract_NPI_data():
             break
 
         if event == 'Open':
-            if create_extract(output_file, args):
+            if create_extract(output_file, args, window):
                 sg.popup(f'Extraction complete. Your data is in {output_file}')
             break
                 
@@ -203,4 +212,5 @@ if __name__ == '__main__':
 """Change log:
 
     v 0.1   : 240605    : Initial version
+    v 0.2   : 240606    : Added status update messages
 """
