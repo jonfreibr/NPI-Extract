@@ -111,18 +111,18 @@ def create_extract(output_file, args, window):
 
     npiFile.close()
 
-    window['-STATUS_MSG-'].update('Local NPIs loaded. Loading Medicaid source file...')
+    window['-STATUS_MSG-'].update(f'{len(npiList)} local NPIs loaded. Loading Medicaid source file...')
     window.refresh()
 
     try:
-        src = openpyxl.load_workbook(sg.popup_get_file('Medicaid source file'))
+        src = openpyxl.load_workbook(sg.popup_get_file('Select the Medicaid source file.', title='Source data'))
     except:
         return False
     
-    window['-STATUS_MSG-'].update('Processing Medicaid source file, please be patient..!')
-    window.refresh()
-
     currentSheet = src.active
+
+    window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({currentSheet.max_row -1} records), please be patient..!')
+    window.refresh()
 
     wb = Workbook() # create our output file
     ws = wb.active
@@ -159,7 +159,7 @@ def create_extract(output_file, args, window):
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
 
-    window['-STATUS_MSG-'].update('Done! Writing output file...')
+    window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted. Writing output file...')
     window.refresh()
     wb.save(output_file) # write the output file
     return True
@@ -206,7 +206,7 @@ def extract_NPI_data():
                 user_config['winLoc'] = winLoc
                 user_config['winSize'] = winSize
                 write_user_settings(user_config)
-                sg.popup(f'Extraction complete. Your data is in {output_file}')
+                sg.popup(f'Extraction complete. Your data is in {output_file}', title='Success!')
             break
                 
     window.close()
