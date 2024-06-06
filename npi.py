@@ -31,7 +31,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.2'
+progver = 'v 0.3'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -91,6 +91,9 @@ def write_user_settings(user_config):
 
 # --------------------------------------------------
 def create_extract(output_file, args, window):
+
+    window['-STATUS_MSG-'].update('Loading local NPIs...')
+    window.refresh()
 
     npiList = [] # Provider List w/NPI
     npiFile = openpyxl.load_workbook(args.file)
@@ -180,7 +183,7 @@ def extract_NPI_data():
     layout = [  [sg.Image('logo.png', size=(400, 96))],
                 [sg.Text('Extract local NPI data from Medicaid source file.')],
                 [sg.Text('', key='-STATUS_MSG-')],
-                [sg.Button('Open'), sg.Text('<-- Medicaid file'), sg.Push(), sg.Button('Quit')],
+                [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
                  [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2023, 2024')] ]
     window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, finalize=True)
     window.BringToFront()
@@ -200,6 +203,9 @@ def extract_NPI_data():
 
         if event == 'Open':
             if create_extract(output_file, args, window):
+                user_config['winLoc'] = winLoc
+                user_config['winSize'] = winSize
+                write_user_settings(user_config)
                 sg.popup(f'Extraction complete. Your data is in {output_file}')
             break
                 
@@ -213,4 +219,6 @@ if __name__ == '__main__':
 
     v 0.1   : 240605    : Initial version
     v 0.2   : 240606    : Added status update messages
+    v 0.3   : 240606    : Just can't stop tweaking... Minor layout & message changes. Saves user settings when run now instead
+                        : of just on "Quit"
 """
