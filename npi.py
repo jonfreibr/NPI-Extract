@@ -31,7 +31,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.3'
+progver = 'v 0.4'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -50,7 +50,8 @@ def get_args():
 		help='Local provider list containing NPIs to look up.',
 		metavar='filename',
 		type=str,
-		default='//brmc-fs2012.int.brmedical.com/ADMIN/Renee Dolder/Credentials/BRMC/Provider List & Charts/Provider lists & charts/Provider Charts - in house/Providers.xlsx')
+		default='Provider.xlsx')    # Put your default file here! NPI in column D, data starts in row 8. 
+                                    # (or update the code to match your format)
 
 	args = parser.parse_args()
 
@@ -121,7 +122,9 @@ def create_extract(output_file, args, window):
     
     currentSheet = src.active
 
-    window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({currentSheet.max_row -1} records), please be patient..!')
+    num_rows = 0
+
+    window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({num_rows} records), please be patient..!')
     window.refresh()
 
     wb = Workbook() # create our output file
@@ -147,6 +150,7 @@ def create_extract(output_file, args, window):
         c_zip_code = (f'L{row}')
 
         if currentSheet[c_npi].value != None: # eliminate blank lines
+            num_rows += 1
             for i in npiList:
                 if currentSheet[c_npi].value in i:
                     npi = currentSheet[c_npi].value
@@ -158,8 +162,11 @@ def create_extract(output_file, args, window):
                     type_desc = currentSheet[c_type_desc].value
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
-
-    window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted. Writing output file...')
+            if num_rows % 50 == 0:
+                window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({num_rows} records), please be patient..!')
+                window.refresh()
+            
+    window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted from {num_rows}. Writing output file...')
     window.refresh()
     wb.save(output_file) # write the output file
     return True
@@ -221,4 +228,5 @@ if __name__ == '__main__':
     v 0.2   : 240606    : Added status update messages
     v 0.3   : 240606    : Just can't stop tweaking... Minor layout & message changes. Saves user settings when run now instead
                         : of just on "Quit"
+    v 0.4   : 240611    : Updated to give a running record count as the source file is processed (for "not hung" feedback!)
 """
