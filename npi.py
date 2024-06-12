@@ -98,7 +98,19 @@ def create_extract(output_file, args, window):
     window.refresh()
 
     npiList = [] # Provider List w/NPI
-    npiFile = openpyxl.load_workbook(args.file)
+    try:
+        npiFile = openpyxl.load_workbook(args.file)
+    except:
+        sg.theme(errorTheme)
+        layout = [ [sg.Text(f'Unable to open {args.file} to load NPI data. Unable to continue')],
+					[sg.Button('Quit')] ]
+        window = sg.Window('FILE ERROR!', layout, finalize=True)
+
+        while True:
+            event, values = window.read()
+            if event in (sg.WIN_CLOSED, 'Quit'): # if user closes window or clicks quit
+                window.close()
+                return False
 
     currentSheet = npiFile['Providers']
     currentProvider = ''
@@ -129,7 +141,7 @@ def create_extract(output_file, args, window):
 
     num_rows = 0
 
-    window['-STATUS_MSG-'].update(f'Working... ({num_rows} records processed)')
+    window['-STATUS_MSG-'].update(f'Processing {num_rows} records...')
     window.refresh()
 
     wb = Workbook() # create our output file
@@ -168,13 +180,26 @@ def create_extract(output_file, args, window):
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
             if num_rows % 50 == 0:
-                window['-STATUS_MSG-'].update(f'Working... ({num_rows} records processed)')
+                window['-STATUS_MSG-'].update(f'Processing {num_rows} records...')
                 window.refresh()
 
     end = time.perf_counter()
     window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted from {num_rows} in {(round(end-start))} seconds.')
     window.refresh()
-    wb.save(output_file) # write the output file
+
+    try:
+        wb.save(output_file) # write the output file
+    except:
+        sg.theme(errorTheme)
+        layout = [ [sg.Text(f'File or data error: {output_file}. Updates NOT saved!')],
+					[sg.Button('Quit')] ]
+        window = sg.Window('FILE ERROR!', layout, finalize=True)
+
+        while True:
+            event, values = window.read()
+            if event in (sg.WIN_CLOSED, 'Quit'): # if user closes window or clicks quit
+                window.close()
+                return False
     return True
 
 # --------------------------------------------------
