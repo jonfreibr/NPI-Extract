@@ -19,6 +19,7 @@ import argparse
 import PySimpleGUI as sg
 import os
 import pickle
+import time
 
 BRMC = {'BACKGROUND': '#73afb6',
                  'TEXT': '#00446a',
@@ -31,7 +32,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.4'
+progver = 'v 0.5'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -50,7 +51,7 @@ def get_args():
 		help='Local provider list containing NPIs to look up.',
 		metavar='filename',
 		type=str,
-		default='Provider.xlsx')    # Put your default file here! NPI in column D, data starts in row 8. 
+		default='Providers.xlsx')    # Put your default file here! NPI in column D, data starts in row 8. 
                                     # (or update the code to match your format)
 
 	args = parser.parse_args()
@@ -112,11 +113,15 @@ def create_extract(output_file, args, window):
 
     npiFile.close()
 
-    window['-STATUS_MSG-'].update(f'{len(npiList)} local NPIs loaded. Loading Medicaid source file...')
+    window['-STATUS_MSG-'].update(f'{len(npiList)} local NPIs loaded.')
     window.refresh()
 
     try:
-        src = openpyxl.load_workbook(sg.popup_get_file('Select the Medicaid source file.', title='Source data'))
+        file = sg.popup_get_file('Select the Medicaid source file.', title='Source data')
+        window['-STATUS_MSG-'].update(f'Loading Medicaid source file. BE PATIENT!')
+        window.refresh()
+        start = time.perf_counter()
+        src = openpyxl.load_workbook(file)
     except:
         return False
     
@@ -124,7 +129,7 @@ def create_extract(output_file, args, window):
 
     num_rows = 0
 
-    window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({num_rows} records), please be patient..!')
+    window['-STATUS_MSG-'].update(f'Working... ({num_rows} records processed)')
     window.refresh()
 
     wb = Workbook() # create our output file
@@ -163,10 +168,11 @@ def create_extract(output_file, args, window):
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
             if num_rows % 50 == 0:
-                window['-STATUS_MSG-'].update(f'Processing Medicaid source file ({num_rows} records), please be patient..!')
+                window['-STATUS_MSG-'].update(f'Working... ({num_rows} records processed)')
                 window.refresh()
-            
-    window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted from {num_rows}. Writing output file...')
+
+    end = time.perf_counter()
+    window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted from {num_rows} in {(round(end-start))} seconds.')
     window.refresh()
     wb.save(output_file) # write the output file
     return True
@@ -229,4 +235,5 @@ if __name__ == '__main__':
     v 0.3   : 240606    : Just can't stop tweaking... Minor layout & message changes. Saves user settings when run now instead
                         : of just on "Quit"
     v 0.4   : 240611    : Updated to give a running record count as the source file is processed (for "not hung" feedback!)
+    v 0.5   : 240612    : Additional UI update with more user feedback & a process timer.
 """
