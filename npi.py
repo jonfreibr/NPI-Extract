@@ -32,7 +32,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.5'
+progver = 'v 0.6'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -261,4 +261,5 @@ if __name__ == '__main__':
                         : of just on "Quit"
     v 0.4   : 240611    : Updated to give a running record count as the source file is processed (for "not hung" feedback!)
     v 0.5   : 240612    : Additional UI update with more user feedback & a process timer.
+    v 0.6   : 240612    : Updated file handling to include error checking.
 """
