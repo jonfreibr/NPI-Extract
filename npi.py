@@ -15,6 +15,7 @@ PySimpleGUI_License = 'ecyJJvMkaRWQNqlebknkN2lJVrHslwwvZ7SAIY6cIykURJpSct3zRNyla
 
 import openpyxl
 from openpyxl import Workbook
+from openpyxl.worksheet.table import Table, TableStyleInfo
 import argparse
 import PySimpleGUI as sg
 import os
@@ -32,7 +33,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.6'
+progver = 'v 0.7'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -179,9 +180,23 @@ def create_extract(output_file, args, window):
                     type_desc = currentSheet[c_type_desc].value
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
+            # ws[f'F{num_rows}'].number_format = 'yyyy-mm-dd'
+            # ws[f'H{num_rows}'].number_format = '00000-0000'
             if num_rows % 50 == 0:
                 window['-STATUS_MSG-'].update(f'Processing {num_rows} records...')
                 window.refresh()
+
+    for cell in ws['F']:
+        cell.number_format = 'YYYY-MM-DD;@'
+
+    for cell in ws['H']:
+        cell.number_format = '00000-0000'
+
+    tab = Table(displayName='Providers', ref=f'A1:H{ws.max_row}')
+    style = TableStyleInfo(name='TableStyleMedium9', showFirstColumn=False, showLastColumn=False,
+                           showRowStripes=True, showColumnStripes=False)
+    tab.tableStyleInfo = style
+    ws.add_table(tab)
 
     end = time.perf_counter()
     window['-STATUS_MSG-'].update(f'Done! {ws.max_row -1} records extracted from {num_rows} in {(round(end-start))} seconds.')
@@ -262,4 +277,5 @@ if __name__ == '__main__':
     v 0.4   : 240611    : Updated to give a running record count as the source file is processed (for "not hung" feedback!)
     v 0.5   : 240612    : Additional UI update with more user feedback & a process timer.
     v 0.6   : 240612    : Updated file handling to include error checking.
+    v 0.7   : 240612    : Updated output file to have data in an Excel table, and to apply desired formatting to date/zip cells.
 """
