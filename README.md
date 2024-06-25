@@ -2,7 +2,7 @@
 
 ## License & Copyright
 
-Copyright © Blue Ridge Medical Center, 2024. All Rights Reserved. 
+Copyright © Blue Ridge Medical Center, 2024. All Rights Reserved.  
 License: GNU GPL Version 3
 
 ## Rationale
