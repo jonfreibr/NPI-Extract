@@ -98,7 +98,7 @@ def create_extract(output_file, args, window):
     window['-STATUS_MSG-'].update('Loading local NPIs...')
     window.refresh()
 
-    npiList = [] # Provider List w/NPI
+    npiList = [] # Provider NPI List
     try:
         npiFile = openpyxl.load_workbook(args.file)
     except:
@@ -115,7 +115,7 @@ def create_extract(output_file, args, window):
 
     currentSheet = npiFile['Providers']
     currentProvider = ''
-    for row in range(8, currentSheet.max_row + 1): # start @ 2 because of the header row!
+    for row in range(8, currentSheet.max_row + 1): # NPI data starts in row 8
         cellA = (f'A{row}')
         cellD = (f'D{row}')
         if currentSheet[cellA].value != None: # We were pulling blank rows for some reason -- filter them out!
@@ -180,8 +180,6 @@ def create_extract(output_file, args, window):
                     type_desc = currentSheet[c_type_desc].value
                     zip_code = currentSheet[c_zip_code].value
                     ws.append([npi, lname, fname, mi, en_type, rv_date, type_desc, zip_code])
-            # ws[f'F{num_rows}'].number_format = 'yyyy-mm-dd'
-            # ws[f'H{num_rows}'].number_format = '00000-0000'
             if num_rows % 50 == 0:
                 window['-STATUS_MSG-'].update(f'Processing {num_rows} records...')
                 window.refresh()
@@ -237,7 +235,7 @@ def extract_NPI_data():
                 [sg.Text('Extract local NPI data from Medicaid source file.')],
                 [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
-                 [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2023, 2024')] ]
+                 [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2024')] ]
     window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, finalize=True)
     window.BringToFront()
 
@@ -279,4 +277,5 @@ if __name__ == '__main__':
     v 0.6   : 240612    : Updated file handling to include error checking.
     v 0.7   : 240612    : Updated output file to have data in an Excel table, and to apply desired formatting to date/zip cells.
     v 0.8   : 240619    : Was finally able to generate distrubution key for this app.
+            : 240625    : Cleaned up a few comments and text -- no code changes.
 """
