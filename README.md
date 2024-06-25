@@ -13,9 +13,9 @@ After briefly reviwing the data, I determined that I could use the provider's NP
 
 ## Reqiurements
 
-Python 3.11
-PySimpleGUI 5.0
-openpyxl 3.1.2
+- Python 3.11
+- PySimpleGUI 5.0
+- openpyxl 3.1.2
 
 A Distribution Key for PySimpleGUI is embedded in the code.
 
