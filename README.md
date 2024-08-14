@@ -25,7 +25,7 @@ Our state (Virginia) provides the extract file as a table in an .xlsd file. The 
 
 ## Operation
 
-1. Launch the program. This can be done from the command line, or via a shortcut. (The included installation batch file will expect a shorcut named "NPI Extraction.lnk". The installation batch file also expects the python source file python-3.11.5-amd64.exe to be in this directory. Update this file per your requirments.)
+1. Launch the program. This can be done from the command line, or via a shortcut. (The included installation batch file will expect a shorcut named "NPI Extraction.lnk", which you will need to create as appropriate for your environment. The installation batch file also expects the python source file python-3.11.5-amd64.exe to be in this directory. Update this file per your requirments.)
        Examples:
            python npi.py
            python npi.py -f d:\myNPIlist.xlsx
