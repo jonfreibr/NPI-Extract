@@ -21,6 +21,8 @@ import PySimpleGUI as sg
 import os
 import pickle
 import time
+import subprocess
+from datetime import datetime
 
 BRMC = {'BACKGROUND': '#73afb6',
                  'TEXT': '#00446a',
@@ -33,7 +35,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.8'
+progver = 'v 0.9'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -92,6 +94,17 @@ def write_user_settings(user_config):
                 window.close()
                 return
 
+# --------------------------------------------------
+def get_part_of_day(h):
+    return (
+        "morning"
+        if h <= 11
+        else "afternoon"
+        if 12 <= h <= 17
+        else "evening"
+        if 18 <= h <= 22
+        else "night"
+    )
 # --------------------------------------------------
 def create_extract(output_file, args, window):
 
@@ -227,11 +240,20 @@ def extract_NPI_data():
     if 'winSize' in user_config:
         winSize = user_config['winSize']
     else:
-        winSize = (450, 190)
+        winSize = (450, 260)
+
+    part = get_part_of_day(datetime.now().hour)
+
+    name = subprocess.check_output(
+        'net user "%USERNAME%" /domain | find /I "Full Name"', shell=True, text=True
+    )
+    full_name = name.replace("Full Name", "").strip()
+    first_name = full_name.split()[0]
     
     
     sg.theme(user_config['Theme'])
     layout = [  [sg.Image('logo.png', size=(400, 96))],
+                [sg.Text(f'Good {part}, {first_name}')],
                 [sg.Text('Extract local NPI data from Medicaid source file.')],
                 [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
@@ -278,4 +300,5 @@ if __name__ == '__main__':
     v 0.7   : 240612    : Updated output file to have data in an Excel table, and to apply desired formatting to date/zip cells.
     v 0.8   : 240619    : Was finally able to generate distrubution key for this app.
             : 240625    : Cleaned up a few comments and text -- no code changes.
+    v 0.9   : 240913    : Added user greeting.
 """
