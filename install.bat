@@ -9,14 +9,14 @@ rem     python-3.11.5-amd64.exe     The Python source file
 rem     requirements.txt            Used by Python to install required libraries
 rem     unattend.xml                Required to run a "hands-off" install of Python.
 rem
-echo Installing Python 3.11.5
+rem echo Installing Python 3.11.5
 python-3.11.5-amd64.exe /passive
-echo upgrading pip
+rem echo upgrading pip
 %LocalAppData%\Programs\Python\Python311\python.exe -m pip install --upgrade pip
-echo Adding package requients
+rem echo Adding package requients
 %LocalAppData%\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-echo Copying files
+rem echo Copying files
 copy /y "NPI Extraction.lnk" %USERPROFILE%\Desktop
-echo Done with installation
+rem echo Done with installation
 rem pause
 rem exit
