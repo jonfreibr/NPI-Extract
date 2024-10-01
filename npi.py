@@ -280,8 +280,7 @@ def extract_NPI_data():
                 user_config['winSize'] = winSize
                 write_user_settings(user_config)
                 sg.popup(f'Extraction complete. Your data is in {output_file}', title='Success!')
-                # subprocess.Popen(f"cmd /c {output_file}")
-                # subprocess.Popen(["cmd", "/c", output_file, "/min"])
+                subprocess.Popen(f"cmd /c start excel {output_file}")
             break
                 
     window.close()
@@ -303,5 +302,5 @@ if __name__ == '__main__':
     v 0.8   : 240619    : Was finally able to generate distrubution key for this app.
             : 240625    : Cleaned up a few comments and text -- no code changes.
     v 0.9   : 240913    : Added user greeting.
-    v 1.0   : 241001    : Stable enough to be a 1.0 release
+    v 1.0   : 241001    : Stable enough to be a 1.0 release. Updated to launch target file on exit.
 """
