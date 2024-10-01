@@ -35,7 +35,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 0.9'
+progver = 'v 1.0'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -280,6 +280,8 @@ def extract_NPI_data():
                 user_config['winSize'] = winSize
                 write_user_settings(user_config)
                 sg.popup(f'Extraction complete. Your data is in {output_file}', title='Success!')
+                # subprocess.Popen(f"cmd /c {output_file}")
+                # subprocess.Popen(["cmd", "/c", output_file, "/min"])
             break
                 
     window.close()
@@ -301,4 +303,5 @@ if __name__ == '__main__':
     v 0.8   : 240619    : Was finally able to generate distrubution key for this app.
             : 240625    : Cleaned up a few comments and text -- no code changes.
     v 0.9   : 240913    : Added user greeting.
+    v 1.0   : 241001    : Stable enough to be a 1.0 release
 """
