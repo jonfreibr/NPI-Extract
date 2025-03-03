@@ -144,7 +144,7 @@ def create_extract(output_file, args, window):
 
     try:
         file = sg.popup_get_file('Select the Medicaid source file.', title='Source data')
-        window['-STATUS_MSG-'].update(f'Loading Medicaid source file. BE PATIENT!')
+        window['-STATUS_MSG-'].update(f'Loading Medicaid source file. BE PATIENT!', text_color='red')
         window.refresh()
         start = time.perf_counter()
         src = openpyxl.load_workbook(file)
@@ -155,7 +155,7 @@ def create_extract(output_file, args, window):
 
     num_rows = 0
 
-    window['-STATUS_MSG-'].update(f'Processing {num_rows} records...')
+    window['-STATUS_MSG-'].update(f'Processing {num_rows} records...', text_color='#00446a')
     window.refresh()
 
     wb = Workbook() # create our output file
