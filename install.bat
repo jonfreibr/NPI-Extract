@@ -12,9 +12,9 @@ rem
 rem echo Installing Python 3.11.5
 "%~dp0\python-3.11.5-amd64.exe" /passive
 echo upgrading pip
-%LocalAppData%\Programs\Python\Python311\python.exe -m pip install --upgrade pip -q
+%LocalAppData%\Programs\Python\Python311\python.exe -m pip install --upgrade pip
 echo Adding package requients
-%LocalAppData%\Programs\Python\Python311\Scripts\pip.exe install -r "%~dp0\requirements.txt" -q
-%LocalAppData%\Programs\Python\Python311\Scripts\pip.exe install -i https://PySimpleGUI.net/install PySimpleGUI -q
+%LocalAppData%\Programs\Python\Python311\Scripts\pip.exe install -r "%~dp0\requirements.txt"
+%LocalAppData%\Programs\Python\Python311\Scripts\pip.exe install -i https://PySimpleGUI.net/install PySimpleGUI
 rem echo Copying files
 copy /y "%~dp0\NPI Extraction.lnk" %USERPROFILE%\Desktop
