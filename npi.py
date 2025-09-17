@@ -35,7 +35,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 1.0'
+progver = 'v 1.01a'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -108,7 +108,7 @@ def get_part_of_day(h):
 # --------------------------------------------------
 def create_extract(output_file, args, window):
 
-    window['-STATUS_MSG-'].update('Loading local NPIs...')
+    window['-NPI_STATUS-'].update('Loading local NPIs...')
     window.refresh()
 
     npiList = [] # Provider NPI List
@@ -139,7 +139,7 @@ def create_extract(output_file, args, window):
 
     npiFile.close()
 
-    window['-STATUS_MSG-'].update(f'{len(npiList)} local NPIs loaded.')
+    window['-NPI_STATUS-'].update(f'{len(npiList)} local NPIs loaded.')
     window.refresh()
 
     try:
@@ -240,7 +240,7 @@ def extract_NPI_data():
     if 'winSize' in user_config:
         winSize = user_config['winSize']
     else:
-        winSize = (450, 260)
+        winSize = (450, 280)
 
     part = get_part_of_day(datetime.now().hour)
 
@@ -255,6 +255,7 @@ def extract_NPI_data():
     layout = [  [sg.Image('logo.png', size=(400, 96))],
                 [sg.Text(f'Good {part}, {first_name}')],
                 [sg.Text('Extract local NPI data from Medicaid source file.')],
+                [sg.Text('', key='-NPI_STATUS-')],
                 [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
                  [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2024')] ]
@@ -303,4 +304,6 @@ if __name__ == '__main__':
             : 240625    : Cleaned up a few comments and text -- no code changes.
     v 0.9   : 240913    : Added user greeting.
     v 1.0   : 241001    : Stable enough to be a 1.0 release. Updated to launch target file on exit.
+    v 1.01  : 250815    : Updated display to keep NPI count visible.
+    v 1.01a : 250909    : Fixed initial window size
 """
