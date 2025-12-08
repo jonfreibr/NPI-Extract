@@ -20,9 +20,11 @@ import argparse
 import PySimpleGUI as sg
 import os
 import pickle
+import sys
 import time
 import subprocess
 from datetime import datetime
+import atexit
 
 BRMC = {'BACKGROUND': '#73afb6',
                  'TEXT': '#00446a',
@@ -35,7 +37,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 1.01a'
+progver = 'v 1.1'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -93,6 +95,30 @@ def write_user_settings(user_config):
             if event in (sg.WIN_CLOSED, 'Quit'): # if user closes window or clicks quit
                 window.close()
                 return
+
+# --------------------------------------------------
+def do_update():
+    sg.theme('Kayak')
+    layout = [ [sg.Text('There is an update available for the NPI application.')],
+                [sg.Text('Automatic updates are only available for Windows at this time.')],
+                [sg.Text('Other platforms please check with your systems administrator.')],
+                [sg.Button("Update"), sg.Button("Skip")]]
+    window = sg.Window("Updates", layout)
+    while True:
+        event, values = window.read()
+
+        if event in (sg.WIN_CLOSED, 'Skip'):
+            atexit.unregister(update_app)
+            window.close()
+            return False
+        if event == "Update":
+            window.close()
+            return True
+
+# --------------------------------------------------
+def update_app():
+    if sys.platform == "win32":
+        subprocess.Popen(["cmd", "/c", "H:/_BRMCApps/NPI Extraction/install.bat", "/min"], stdout=None, stderr=None)
 
 # --------------------------------------------------
 def get_part_of_day(h):
@@ -288,7 +314,19 @@ def extract_NPI_data():
 
 # --------------------------------------------------
 if __name__ == '__main__':
-	extract_NPI_data()
+    answer = False
+    try:
+        if sys.platform == "win32":
+            if datetime.fromtimestamp(os.path.getmtime(__file__)) < datetime.fromtimestamp(os.path.getmtime('H:/_BRMCApps/NPI Extraction/npi.py')):
+                atexit.register(update_app)
+                answer = do_update()
+    except:
+        pass
+
+    if answer:
+        sys.exit()
+    else:
+        extract_NPI_data()
         
 """Change log:
 
@@ -306,4 +344,6 @@ if __name__ == '__main__':
     v 1.0   : 241001    : Stable enough to be a 1.0 release. Updated to launch target file on exit.
     v 1.01  : 250815    : Updated display to keep NPI count visible.
     v 1.01a : 250909    : Fixed initial window size
+    v 1.1   : 251208    : Added self-update code in advance of moving to local install in virtual environment.
+                        : Updated install.bat to create/use virtual environment.
 """
