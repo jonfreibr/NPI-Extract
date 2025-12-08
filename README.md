@@ -37,4 +37,4 @@ Our state (Virginia) provides the extract file as a table in an .xlsd file. The 
 6.  Once parsing starts, a count of records processed will be displayed.
 7.  When complete, the total records processed, the number of records extracted, and the time elapsed will be displayed.
 8.  A pop-up will appear showing that the extracted data has been saved in your Downloads folder under the name "MedicaidProviderExtract.xlsx".
-9.  Clicking "OK" will close the program.
+9.  Clicking "OK" will close the program and load the extract spreadsheet.
