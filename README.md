@@ -25,11 +25,11 @@ Our state (Virginia) provides the extract file as a table in an .xlsd file. The 
 
 ## Operation
 
-1. Launch the program. This can be done from the command line, or via a shortcut. (The included installation batch file will expect a shorcut named "NPI Extraction.lnk", which you will need to create as appropriate for your environment. The installation batch file also expects the python source file python-3.11.5-amd64.exe to be in this directory. Update this file per your requirments.)
-       Examples:
-           python npi.py
-           python npi.py -f d:\myNPIlist.xlsx
-           python npi.py --file d:\myNPIlist.xlsx
+1. Launch the program. This can be done from the command line, or via a shortcut. (The included installation batch file will expect a shorcut named "NPI Extraction.lnk", which you will need to create as appropriate for your environment. The installation batch file also expects the python source file python-3.11.5-amd64.exe to be in this directory. Update this file per your requirments.)  
+       Examples:  
+           python npi.py  
+           python npi.py -f d:\myNPIlist.xlsx  
+           python npi.py --file d:\myNPIlist.xlsx  
 2.  On launch, the two options presented are "Open" and "Quit". Quit should be self-explanatory.
 3.  Clicking "Open" will load the local NPI file (a count of NPIs loaded will be displayed) and a file open dialog will appear.
 4.  Select the appropriate .xlsx file (NOT the original .xlsb) and click "OK".
