@@ -10,7 +10,7 @@ rem     requirements.txt            Used by Python to install required libraries
 rem     unattend.xml                Required to run a "hands-off" install of Python.
 rem
 setlocal enabledelayedexpansion
-title Install Insurance Query Tool
+title Install NPI Extraction Tool
 echo Sourcing from: %~dp0
 
 :: Prevent early exit on errors
