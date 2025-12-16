@@ -5,7 +5,7 @@ rem Required files:
 rem     logo.png                    logo file displayed by application at runtime
 rem     NPI Extraction.lnk          create this shortcut file to reflect your installation and runtime requirements!!
 rem     npi.py                      The main application file
-rem     python-3.11.5-amd64.exe     The Python source file
+rem     python-3.12.3-amd64.exe     The Python source file
 rem     requirements.txt            Used by Python to install required libraries
 rem     unattend.xml                Required to run a "hands-off" install of Python.
 rem
@@ -19,13 +19,22 @@ set "ERRORFLAG=0"
 echo Checking for existing Python installation...
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo Python not found. Installing Python 3.11.5...
-    "%~dp0\python-3.11.5-amd64.exe" /passive
-    set "PYTHON_PATH=%LocalAppData%\Programs\Python\Python311\python.exe"
+    echo Python not found.
+    set INSTALL=TRUE
 ) else (
     for /f "tokens=2 delims= " %%a in ('python --version 2^>^&1') do set "VERSION=%%a"
     echo Found Python version: !VERSION!
-    set "PYTHON_PATH=python"
+    if "%VERSION%" equ "3.12.3" (
+        set INSTALL=FALSE
+        set "PYTHON_PATH=%LocalAppData%\Programs\Python\Python312\python.exe"
+    ) else (
+        set INSTALL=TRUE
+    )
+)
+
+if "%INSTALL%" equ "TRUE" (
+    "%~dp0\python-3.12.3-amd64.exe" /passive
+    set "PYTHON_PATH=%LocalAppData%\Programs\Python\Python312\python.exe"
 )
 
 set "PROJECT_DIR=%USERPROFILE%\NPIExtract"
@@ -46,12 +55,12 @@ echo Virtual environment created at: %VENV_DIR%
 
 echo Activating virtual environment and upgrading pip...
 call "%VENV_DIR%\Scripts\activate.bat"
-call python -m pip install --upgrade pip
+call %PYTHON_PATH% -m pip install --upgrade pip
 
 if exist "%~dp0\requirements.txt" (
     echo Installing required Python packages in venv...
-    call python -m pip install -r "%~dp0\requirements.txt"
-    call python -m pip install -i https://PySimpleGUI.net/install PySimpleGUI
+    call %PYTHON_PATH% -m pip install -r "%~dp0\requirements.txt"
+    call %PYTHON_PATH% -m pip install -i https://PySimpleGUI.net/install PySimpleGUI
     if %errorlevel% neq 0 (
         echo ERROR: Failed to install dependencies.
         set "ERRORFLAG=1"
