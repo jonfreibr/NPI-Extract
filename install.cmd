@@ -16,6 +16,10 @@ echo Sourcing from: %~dp0
 :: Prevent early exit on errors
 set "ERRORFLAG=0"
 
+set "PROJECT_DIR=%USERPROFILE%\NPIExtract"
+set "VENV_DIR=%PROJECT_DIR%\venv"
+set "DESKTOP_DIR=%USERPROFILE%\Desktop"
+
 echo Checking for existing Python installation...
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
@@ -27,6 +31,7 @@ if %errorlevel% neq 0 (
     if "%VERSION%" equ "3.12.3" (
         set INSTALL=FALSE
         set "PYTHON_PATH=%LocalAppData%\Programs\Python\Python312\python.exe"
+	set VENV_PYTHON=%VENV_DIR%\scripts\python.exe
     ) else (
         set INSTALL=TRUE
     )
@@ -35,11 +40,8 @@ if %errorlevel% neq 0 (
 if "%INSTALL%" equ "TRUE" (
     "%~dp0\python-3.12.3-amd64.exe" /passive
     set "PYTHON_PATH=%LocalAppData%\Programs\Python\Python312\python.exe"
+    set VENV_PYTHON=%VENV_DIR%\scripts\python.exe
 )
-
-set "PROJECT_DIR=%USERPROFILE%\NPIExtract"
-set "VENV_DIR=%PROJECT_DIR%\venv"
-set "DESKTOP_DIR=%USERPROFILE%\Desktop"
 
 echo Creating project folder...
 if not exist "%PROJECT_DIR%" md "%PROJECT_DIR%"
@@ -54,22 +56,24 @@ if %errorlevel% neq 0 (
 echo Virtual environment created at: %VENV_DIR%
 
 echo Activating virtual environment and upgrading pip...
+
 call "%VENV_DIR%\Scripts\activate.bat"
-call %PYTHON_PATH% -m pip install --upgrade pip
+call "%PYTHON_PATH%" -m pip install --upgrade pip
 
 if exist "%~dp0\requirements.txt" (
     echo Installing required Python packages in venv...
-    call %PYTHON_PATH% -m pip install -r "%~dp0\requirements.txt"
-    call %PYTHON_PATH% -m pip install -i https://PySimpleGUI.net/install PySimpleGUI
-    if %errorlevel% neq 0 (
-        echo ERROR: Failed to install dependencies.
-        set "ERRORFLAG=1"
-        goto :END
+    call "%VENV_PYTHON%" -m pip install -r "%~dp0\requirements.txt"
     )
 ) else (
     echo No requirements.txt found — skipping dependency install.
 )
 
+call "%VENV_PYTHON%" -m pip install -i https://PySimpleGUI.net/install PySimpleGUI
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to install dependencies.
+    set "ERRORFLAG=1"
+    goto :END
+)
 echo Copying files
 copy /y "%~dp0\npi.py" %PROJECT_DIR%
 copy /y "%~dp0\logo.png" %PROJECT_DIR%
