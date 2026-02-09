@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Author : Jon Freivald <jfreivald@brmedical.com>
-        : Copyright © Blue Ridge Medical Center, 2024. All Rights Reserved.
+        : Copyright © Blue Ridge Medical Center, 2024, 2026. All Rights Reserved.
         : License: GNU GPL Version 3
 Date   : 2024-06-05
 Purpose: NPI extraction tool
@@ -284,7 +284,7 @@ def extract_NPI_data():
                 [sg.Text('', key='-NPI_STATUS-')],
                 [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
-                 [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2024')] ]
+                 [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2024, 2026')] ]
     window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, finalize=True)
     window.BringToFront()
 

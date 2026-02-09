@@ -68,7 +68,6 @@ if exist "%~dp0\requirements.txt" (
     echo No requirements.txt found — skipping dependency install.
 )
 
-call "%VENV_PYTHON%" -m pip install -i https://PySimpleGUI.net/install PySimpleGUI
 if %errorlevel% neq 0 (
     echo ERROR: Failed to install dependencies.
     set "ERRORFLAG=1"
