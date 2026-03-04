@@ -10,9 +10,6 @@ Purpose: NPI extraction tool
         : Version change log at EoF.
 """
 
-# Distribution license for PiSimpleGUI v5
-PySimpleGUI_License = 'eYysJ6MYaPWpN6lzbMnONmlIVUHCllwoZdSTIF63ITklRppfcS3VRMyja6WiJY1VdRG1lvvvbSiUI7sVIKkPxEpTYw2WVIuocj2yVdJwR5C2IJ6uMoTIcQxCOWDHgJxdNXTSQy5xMKixw7icTeGrlHjUZvW25Ez4ZvUYRelwcwGoxqvBe5Wz1alYbFnzR9WsZ2XdJLz8aoWx9uu0IUjtoLivNNSn40wHIti5wniDTRmhF7tMZYU1ZqpKcMnbNr0QIZjUoBizSzmE9fuOIyiSwIiOTTmAFmtoZeUOxsh8cL3SQCiMO6iGJkGhcLmIVipIdYmyFrszZDC3IHsNI2kzN9vCboX2BAhAb2nGkzidOnioJiClbdHgVzlIIDFQJSpzZOGWd2lRItEy1Pl2ZQGBlmjVY4Www8g1QK2tV2updCGcVmySIVibw1ikQ73MVuzXdGG89ttyZdXlJZJKR1CNIa6wIbjKkS39NrTyEGiqLcCnJOEOYSXRRWlWSOXqNOzqd7WvVnknIHjHoIi9MXjdAmyrNGCl0HwCN3im0OxgO4SBICstIfk2RHhgdsGGVOFAeyHmBopscGm5V6zXIlj9owi1MijPAby7NTSB0qwBMayP0rxtOxSMI6sLIHk2VPtNYkWYldsWQTW9RukFcomHVWzlcryLIY6rImmJpLmSc1mDVUpUdambFSsaZME2BriWchmg1yliZCGhlfjbYFWDwIuiYy2E9atuIFiSwwiLSaVeBPBzZUGURlyeZJXENtzgINjBo3igMejAAz1TLIjzIGyVMbCZ40yWMDzHMEu2MfTcEt2yIXnP0G=5160c5e7f3a0b230efb3661d7a3268ddfd43a0cd8fd74c4308c51bf55ac37cc8544863bed7e251e0e551821240fbb7a92d5f811e068091dc3a337b4743ee4e09b729146f0924a668c7664c0acfec7785021b6ea12e45bb61134318db27191eeeae4b00e2c9ad1894f1e3f69499594997119fa53d53841b3047e9f060510cb405b331b18fff23685bbc3715bd31462f9e8ff6dd1408786a939241b376fb69c3636203419f14648708c96a651cb862eba7244862a76dca8782ddb333f0a31b66eaeb37349e0bfdda847430f4210b7fdd6f9d667ec12effa82ba76035f99f0cad2ecbc7285a10fdd1c0e9bdf831aef6c14532163d2d6c18ab53a0f2d75e828d433b3040adc67346f64048b1851e0d2f396316e2476259f00083826a12a2ea1ff2cfeec1b8e3b4e2d3ee52c24a824a608e5d04f1b3e8539f0a27b19cacd0d0619519b2d493f6eda6a1f404be388d20ae237518d0119a214b6b9e3e4e8e25ff655c9cee8d1e658127af5a38f36fcbe13be1f48b4bf2faca18ea7cfa621d22de232533ba86b9ca392c64770644cd5bb6fb95e45e2c1894b187fc890a77a41892f18cbc43d7861dc79a1426efce3a1ca9210ad3b848ed5771924e479290becf7a315776a0f31abcb46baacfe318209f0a31c68d10d6476609469e096ea89f1d8e787ede1f34cd1712cb2b3fabb3a99864c368b659762f77f50752836749f86eabf85dd08'
-
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
@@ -37,7 +34,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 1.1'
+progver = 'v 1.1a'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -346,4 +343,5 @@ if __name__ == '__main__':
     v 1.01a : 250909    : Fixed initial window size
     v 1.1   : 251208    : Added self-update code in advance of moving to local install in virtual environment.
                         : Updated install.bat to create/use virtual environment.
+    v 1.1a  : 260304    : Updated install.bat to remove PySimpleGUI (v5). Removed PySimpleGUI v5 license key. Now using PySimpleGUI-4-foss.
 """

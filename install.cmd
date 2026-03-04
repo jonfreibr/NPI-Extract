@@ -62,6 +62,7 @@ call "%PYTHON_PATH%" -m pip install --upgrade pip
 
 if exist "%~dp0\requirements.txt" (
     echo Installing required Python packages in venv...
+    call "%VENV_PYTHON%" -m pip uninstall -y PySimpleGUI
     call "%VENV_PYTHON%" -m pip install -r "%~dp0\requirements.txt"
     )
 ) else (
