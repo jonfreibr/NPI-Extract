@@ -34,7 +34,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 1.1a'
+progver = 'v 1.1b'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -115,7 +115,7 @@ def do_update():
 # --------------------------------------------------
 def update_app():
     if sys.platform == "win32":
-        subprocess.Popen(["cmd", "/c", "H:/_BRMCApps/NPI Extraction/install.bat", "/min"], stdout=None, stderr=None)
+        subprocess.Popen(["cmd", "/c", "H:/_BRMCApps/NPI Extraction/install.cmd", "/min"], stdout=None, stderr=None)
 
 # --------------------------------------------------
 def get_part_of_day(h):
@@ -344,4 +344,5 @@ if __name__ == '__main__':
     v 1.1   : 251208    : Added self-update code in advance of moving to local install in virtual environment.
                         : Updated install.bat to create/use virtual environment.
     v 1.1a  : 260304    : Updated install.bat to remove PySimpleGUI (v5). Removed PySimpleGUI v5 license key. Now using PySimpleGUI-4-foss.
+    v 1.1b  : 260325    : Updated for install.cmd instead of install.bat
 """
