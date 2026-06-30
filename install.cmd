@@ -77,6 +77,7 @@ if %errorlevel% neq 0 (
 echo Copying files
 copy /y "%~dp0\npi.py" %PROJECT_DIR%
 copy /y "%~dp0\logo.png" %PROJECT_DIR%
+copy /y "%~dp0\data-extraction.ico" %PROJECT_DIR%
 copy /y "%~dp0\NPI Extraction.lnk" %DESKTOP_DIR%
 
 echo Launching NPI Extraction Tool...
