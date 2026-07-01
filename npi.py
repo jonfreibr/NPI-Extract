@@ -34,7 +34,7 @@ BRMC = {'BACKGROUND': '#73afb6',
                  }
 sg.theme_add_new('BRMC', BRMC)
 
-progver = 'v 1.1b'
+progver = 'v 1.1c'
 mainTheme = 'BRMC'
 errorTheme = 'HotDogStand'
 config_file = (f'{os.path.expanduser("~")}/npi_config.dat')
@@ -282,7 +282,7 @@ def extract_NPI_data():
                 [sg.Text('', key='-STATUS_MSG-')],
                 [sg.Button('Open'), sg.Text('<-- Medicaid source file'), sg.Push(), sg.Button('Quit')],
                  [sg.Push(), sg.Text('Copyright © Blue Ridge Medical Center, 2024, 2026')] ]
-    window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, finalize=True)
+    window = sg.Window(f'Provider NPI Query Tool {progver}', layout, location=winLoc, size=winSize, element_justification='center', grab_anywhere=True, resizable=True, icon='data-extraction.ico', finalize=True)
     window.BringToFront()
 
     while True:
@@ -345,4 +345,5 @@ if __name__ == '__main__':
                         : Updated install.bat to create/use virtual environment.
     v 1.1a  : 260304    : Updated install.bat to remove PySimpleGUI (v5). Removed PySimpleGUI v5 license key. Now using PySimpleGUI-4-foss.
     v 1.1b  : 260325    : Updated for install.cmd instead of install.bat
+    v 1.1c  : 260701    : Added window and task bar icon.
 """
