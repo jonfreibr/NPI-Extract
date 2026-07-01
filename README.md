@@ -14,10 +14,8 @@ After briefly reviwing the data, I determined that I could use the provider's NP
 ## Reqiurements
 
 - Python 3.11
-- PySimpleGUI 5.0
+- PySimpleGUI-4-foss 4.60.4.1
 - openpyxl 3.1.2
-
-A Distribution Key for PySimpleGUI (Commercial License) is embedded in the code.
 
 The requirements for the program are simple. There needs to be a source file that is a spreadsheet (.xlsx format) contains a list of local NPIs. In our case, a local spreadsheet existed that listed the provider name in column A and their NPI in column D, starting on row 8. You can create a spreadsheet with this specification, or modify the code to match the structure of your existing spreadsheet. The program will expect "Providers.xlsx" in the current directory. You can specify a file and location with '-f' or '--file' argument. 
 
